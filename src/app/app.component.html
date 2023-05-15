@@ -1,0 +1,71 @@
+<div class="wrapper">
+  <div>
+    <ul class="list-none">
+      bands
+      <li *ngFor="let band of showBands; let i = index">
+        {{ band.name }}
+        <div *ngIf="i == 0; else isNotFirst">
+          {{ 0 }}
+          -
+          {{ band.numericValue }}
+          <!-- <input type="text" [(ngModel)]="band.numericValue" style="width:20px" (blur)="fillColor()"> -->
+        </div>
+        <ng-template #isNotFirst>
+          <div *ngIf="showBands[i + 1] !== undefined; else last">
+            {{ showBands[i - 1].numericValue }}
+            -
+            <!-- <input type="text" [(ngModel)]="band.numericValue" style="width:20px" (blur)="fillColor()"> -->
+            {{ band.numericValue }}
+          </div>
+          <ng-template #last>
+            <!-- <input type="text" [(ngModel)]="showBands[i-1].numericValue" style="width:20px" (blur)="fillColor()"> -->
+            {{ showBands[i - 1].numericValue }}
+            -
+            {{ maxRange }}
+          </ng-template>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="slider-track layer-1"></div>
+    <div class="minMax pb-3">
+      <div class="text-lg font-bold">{{ minRange }}</div>
+      <div class="text-lg font-bold">{{ showMaxRange }}</div>
+    </div>
+    <input
+      *ngFor="let band of copy; let i = index"
+      type="range"
+      min="0"
+      #ref
+      [id]="i"
+      [max]="maxRange"
+      class="layer-1"
+      [(ngModel)]="band.numericValue"
+      (mouseup)="checkValidation()"
+      (input)="fillColor(ref, $event)"
+    />
+    <div class="stripes-wrapp">
+      <div class="stripe" *ngFor="let strip of stripes"></div>
+    </div>
+  </div>
+</div>
+
+<H1 style="inline">{{ round }}</H1>
+<input
+  type="radio"
+  [(ngModel)]="round"
+  (change)="changeRound()"
+  [value]="false"
+/>
+
+<input
+  type="radio"
+  [(ngModel)]="round"
+  (change)="changeRound()"
+  [value]="true"
+/>
+{{ range }}
+
+<hr />
+{{ copy | json }}
